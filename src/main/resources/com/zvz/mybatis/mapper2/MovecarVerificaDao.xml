@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zvz.mybatis.mapper2.MovecarVerificaDao">
+
+	<insert id="save" parameterType="com.zvz.mybatis.domain2.MovecarVerificaEntity" useGeneratedKeys="true" keyProperty="id">
+		<selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+			SELECT max(id)+1 from TB_MOVECAR_VERIFICA
+		</selectKey>
+
+		INSERT INTO TB_MOVECAR_VERIFICA (
+		"ID",
+		"MOBILE",
+		"ISVALID",
+		"CODE",
+		"SENDTIME"
+		)
+		VALUES
+		(
+		#{id},
+		#{mobile},
+		#{isvalid},
+		#{code},
+		#{sendtime}
+		);
+
+	</insert>
+    <select id="queryObject" resultType="com.zvz.mybatis.domain2.MovecarVerificaEntity">
+		select * from TB_MOVECAR_VERIFICA where id = #{value}
+	</select>
+
+
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zvz.mybatis.mapper.CsdnblogDao">
+
+	<select id="queryObject" resultType="com.zvz.mybatis.domain.CsdnblogEntity">
+		select * from csdnblog where id = #{value}
+	</select>
+
+</mapper>
