@@ -16,4 +16,7 @@ import java.util.Map;
 public interface CsdnblogDao  {
 	CsdnblogEntity queryObject(Object id);
 
+
+	void save(CsdnblogEntity csdnblogEntity);
+
 }

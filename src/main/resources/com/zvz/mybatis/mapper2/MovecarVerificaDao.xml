@@ -22,7 +22,7 @@
 		#{isvalid},
 		#{code},
 		#{sendtime}
-		);
+		)
 
 	</insert>
     <select id="queryObject" resultType="com.zvz.mybatis.domain2.MovecarVerificaEntity">

@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.zvz.mybatis.mapper.CsdnblogDao">
+	<insert id="save" parameterType="com.zvz.mybatis.domain.CsdnblogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into csdnblog
+		(
+			`author`,
+			`author_url`,
+			`url`,
+			`title`,
+			`context`,
+			`label`,
+			`creat_date`
+		)
+		values
+		(
+			#{author},
+			#{authorUrl},
+			#{url},
+			#{title},
+			#{context},
+			#{label},
+			#{creatDate}
+		)
+	</insert>
 
 	<select id="queryObject" resultType="com.zvz.mybatis.domain.CsdnblogEntity">
 		select * from csdnblog where id = #{value}

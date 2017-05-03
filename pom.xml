@@ -332,6 +332,17 @@
             <version>3.1.1</version>
         </dependency>
 
+        <!--atomikos实现多数据源支持分布式事务管理-->
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jdbc</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
 
 </project>
