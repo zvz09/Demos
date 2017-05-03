@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <context:component-scan base-package="com.zvz.mybatis" />
+
+    <!-- enable autowire -->
+    <context:annotation-config />
+
+   <!-- Atomikos数据源配置方法有三种分别有：
+            SimpleDataSourceBean,AtomikosDataSourceBean,AtomikosNonXADataSourceBean可任选一种
+    Simple表示基础数据库连接配置
+    <bean id="oracleJta" class="com.atomikos.jdbc.SimpleDataSourceBean" init-method="init" destroy-method="close">
+        <property name="uniqueResourceName">
+            <value>OracleXADataSource</value>   &lt;!&ndash;任意命名，但必须唯一&ndash;&gt;
+        </property>
+        <property name="xaDataSourceClassName">
+            <value>oracle.jdbc.xa.client.OracleXADataSource</value>
+        </property>
+        <property name="xaDataSourceProperties">
+            <value>URL=jdbc:oracle:thin:@localhost:1521:orcl;user=orcl;password=</value>
+        </property>
+        <property name="exclusiveConnectionMode">
+            <value>true</value>
+        </property>
+        <property name="connectionPoolSize">
+            <value>3</value>
+        </property>
+        <property name="validatingQuery">
+            <value>SELECT 1</value>
+        </property>
+    </bean>
+    Atomikos表示必须要用到XA数据库驱动类,可设置连接池(经过测试推荐此方法)
+    <bean id="oracleJta" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close" lazy-init="true">
+        <property name="uniqueResourceName">
+            <value>OracleXADataSource</value>
+        </property>
+        <property name="xaDataSourceClassName">
+            <value>oracle.jdbc.xa.client.OracleXADataSource</value>
+        </property>
+        <property name="xaProperties">
+            <props>
+                <prop key="URL">jdbc:oracle:thin:@localhost:1521:orcl</prop>
+                <prop key="user">orcl</prop>
+                <prop key="password"></prop>
+            </props>
+        </property>
+        <property name="poolSize"><value>1</value></property>
+        <property name="maxPoolSize"><value>30</value></property>
+    </bean>
+    AtomikosNon表示必须要用到普通数据库驱动类,可设置连接池
+    <bean id="oracleJta" class="com.atomikos.jdbc.nonxa.AtomikosNonXADataSourceBean">
+        <property name="uniqueResourceName"><value>OracleXADataSource</value></property>
+        <property name="user"><value>orcl</value></property>
+        <property name="password"><value></value></property>
+        <property name="url"><value>jdbc:oracle:thin:@192.168.1.217:1521:orcl</value></property>
+        <property name="driverClassName"><value>oracle.jdbc.OracleDriver</value></property>
+        <property name="poolSize"><value>1</value></property>
+        <property name="borrowConnectionTimeout"><value>60</value></property>
+    </bean>-->
+
+    <!--mysql  数据源配置-->
+    <bean id="mysqlDataSource" class="com.atomikos.jdbc.nonxa.AtomikosNonXADataSourceBean">
+        <property name="uniqueResourceName"><value>MysqlXADataSource</value></property>
+        <property name="user"><value>root</value></property>
+        <property name="password"><value>root</value></property>
+        <property name="url"><value>jdbc:mysql://localhost:3333/grocery_store</value></property>
+        <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="poolSize"><value>1</value></property>
+        <property name="borrowConnectionTimeout"><value>60</value></property>
+    </bean>
+
+    <bean id="mysqlSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="mysqlDataSource" />
+        <property name="typeAliasesPackage" value="com.zvz.mybatis.domain" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="mysqlSqlSessionFactory"/>
+        <property name="basePackage" value="com.zvz.mybatis.mapper" />
+    </bean>
+    <!--end-->
+
+    <!--oracle  数据源配置-->
+    <bean id="oracleDataSource" class="com.atomikos.jdbc.nonxa.AtomikosNonXADataSourceBean">
+        <property name="uniqueResourceName"><value>OracleXADataSource</value></property>
+        <property name="user"><value>movecar04</value></property>
+        <property name="password"><value>movecar04</value></property>
+        <property name="url"><value>jdbc:oracle:thin:@192.168.10.100:1521:orcl</value></property>
+        <property name="driverClassName"><value>oracle.jdbc.OracleDriver</value></property>
+        <property name="poolSize"><value>1</value></property>
+        <property name="borrowConnectionTimeout"><value>60</value></property>
+    </bean>
+
+    <bean id="oracleSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="oracleDataSource" />
+        <property name="typeAliasesPackage" value="com.zvz.mybatis.domain2" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="oracleSqlSessionFactory"/>
+        <property name="basePackage" value="com.zvz.mybatis.mapper2" />
+    </bean>
+    <!--end-->
+
+    <!--配置jta事务管理-->
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager">
+            <bean class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+                <property name="forceShutdown" value="true"/>
+            </bean>
+        </property>
+        <property name="userTransaction">
+            <bean class="com.atomikos.icatch.jta.UserTransactionImp"/>
+        </property>
+    </bean>
+    <!-- （注意，本来要配置transaction-manager属性，
+    如：<tx:annotation-driven transaction-manager="transactionManager"/>。
+    这里没有配置是因为它的默认值是transactionManager）-->
+    <tx:annotation-driven/>
+
+
+</beans>
