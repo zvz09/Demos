@@ -1,5 +1,6 @@
 package com.zvz.mybatis.test;
 
+import com.zvz.mybatis.domain.CsdnblogEntity;
 import com.zvz.mybatis.domain2.MovecarVerificaEntity;
 import com.zvz.mybatis.service.ICsdnblogService;
 import com.zvz.mybatis.service.IMovecarVerifica;
@@ -57,7 +58,32 @@ public class MybatisTest {
         verifica.save(verificaEntity);
 
         System.out.println("verificaEntity_ID==="+verificaEntity.getId());
+    }
 
+    @Test
+    public void test03(){
+
+        ApplicationContext ac = new ClassPathXmlApplicationContext("atomikosContext.xml");
+        System.out.println(ac);
+
+        ICsdnblogService csdnblogService = (ICsdnblogService)ac.getBean("csdnblogService");
+
+        CsdnblogEntity csdnblogEntity = new CsdnblogEntity();
+        csdnblogEntity.setAuthor("ccc");
+        csdnblogEntity.setAuthorUrl("ccc");
+        csdnblogEntity.setContext("ccc");
+        csdnblogEntity.setUrl("cc");
+        csdnblogEntity.setLabel("cc");
+        csdnblogEntity.setTitle("ccc");
+        csdnblogEntity.setCreatDate(new Timestamp(System.currentTimeMillis()));
+
+        MovecarVerificaEntity verificaEntity = new MovecarVerificaEntity();
+        verificaEntity.setMobile("111111111");
+        verificaEntity.setCode("159874");
+        verificaEntity.setIsvalid(0);
+        verificaEntity.setSendtime(new Timestamp(System.currentTimeMillis()));
+
+        csdnblogService.saveAll(csdnblogEntity,verificaEntity,true);
 
     }
 }
