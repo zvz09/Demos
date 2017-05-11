@@ -3,6 +3,7 @@ package com.zvz.mybatis.test;
 import com.zvz.mybatis.domain.CsdnblogEntity;
 import com.zvz.mybatis.domain2.MovecarVerificaEntity;
 import com.zvz.mybatis.service.ICsdnblogService;
+import com.zvz.mybatis.service.IMethodLogService;
 import com.zvz.mybatis.service.IMovecarVerifica;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -32,12 +33,17 @@ public class MybatisTest {
         ICsdnblogService csdnblogService = (ICsdnblogService)ac.getBean("csdnblogService");
 
         IMovecarVerifica verifica = (IMovecarVerifica)ac.getBean("movecarVerificaImpl");
+
+        IMethodLogService methodLogService = (IMethodLogService)ac.getBean("methodLogServiceImpl");
         System.out.print("Mysql 数据库数据:");
         System.out.println(csdnblogService.queryObject(1).getAuthor());
 
 
         System.out.print("Oracle 数据库数据:");
         System.out.println(verifica.queryObject(188).getMobile());
+
+        System.out.print("sqlserver 数据库数据:");
+        System.out.println(methodLogService.queryObject(1).toString());
     }
 
     @Test

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zvz.generator.mapper.GeneratorDao">
+
+    <select id="queryList" resultType="map">
+        select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables
+        where table_schema = (select database())
+        <if test="tableName != null and tableName.trim() != ''">
+            and table_name like concat('%', #{tableName}, '%')
+        </if>
+        order by table_name
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from information_schema.tables where table_schema = (select database())
+        <if test="tableName != null and tableName.trim() != ''">
+            and table_name like concat('%', #{tableName}, '%')
+        </if>
+    </select>
+
+    <select id="queryTable" resultType="map">
+        select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables
+        where table_schema = (select database()) and table_name = #{tableName}
+    </select>
+
+    <select id="queryColumns" resultType="map">
+        select
+             c.name as columnName,t.name as dataType
+                ,isnull(ETP.value,'') AS columnComment
+             ,convert(bit,case when exists(select 1 from sysobjects where xtype='PK' and parent_obj=c.id and name in (
+                 select name from sysindexes where indid in(
+                     select indid from sysindexkeys where id = c.id and colid=c.colid))) then 1 else 0 end)
+                         as columnKey
+             ,ISNULL(CM.text,'') as extra
+
+             --,ROW_NUMBER() OVER (ORDER BY C.name) AS [Row]
+        from syscolumns c
+        inner join systypes t on c.xusertype = t.xusertype
+        left join sys.extended_properties ETP on ETP.major_id = c.id and ETP.minor_id = c.colid and ETP.name ='MS_Description'
+        left join syscomments CM on c.cdefault=CM.id
+        where c.id = object_id(#{tableName})
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zvz.mybatis.mapper3.MethodLogDao">
+
+	<insert id="save" parameterType="com.zvz.mybatis.domain3.MethodLogEntity" useGeneratedKeys="true" keyProperty="id">
+
+
+	</insert>
+    <select id="queryObject" resultType="com.zvz.mybatis.domain3.MethodLogEntity">
+		SELECT * from method_log WHERE id = #{value}
+	</select>
+
+
+</mapper>
